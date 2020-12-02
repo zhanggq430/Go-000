@@ -6,7 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/pkg/errors"
+	"log"
 )
+
+var ErrUserNotFound = errors.New("user not found")
 
 type Users struct {
 	Name    string
@@ -24,8 +27,9 @@ func (u *Users) GetById(id int) error {
 		return errors.WithStack(sql.ErrNoRows)
 	}
 
+	// sql错误自己处理掉不往上抛
 	if ctx.Error != nil {
-		return errors.Wrap(ctx.Error, "查询发生错误")
+		log.Println(ctx.Error)
 	}
 	return nil
 }
