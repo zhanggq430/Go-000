@@ -6,7 +6,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/pkg/errors"
-	"log"
 )
 
 var ErrUserNotFound = errors.New("user not found")
@@ -29,7 +28,7 @@ func (u *Users) GetById(id int) error {
 
 	// sql错误自己处理掉不往上抛
 	if ctx.Error != nil {
-		log.Println(ctx.Error)
+		return errors.WithStack(ctx.Error)
 	}
 	return nil
 }
